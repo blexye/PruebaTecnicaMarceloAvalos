@@ -10,8 +10,8 @@ namespace PruebaTecnicaMarceloAvalos.Infrastructure.Persistence
 			{
 			}
 
-			public DbSet<Users> Users { get; set; }
-			public DbSet<Addresses> Addresses { get; set; }
-			public DbSet<Currencies> Currencies { get; set; }
+			public DbSet<User> User { get; set; }
+			public DbSet<Address> Address { get; set; }
+			public DbSet<Currency> Currency { get; set; }
 	}
 }

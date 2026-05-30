@@ -10,7 +10,7 @@ using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
 namespace PruebaTecnicaMarceloAvalos.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260530170950_InitialCreate")]
+    [Migration("20260530175943_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -19,7 +19,7 @@ namespace PruebaTecnicaMarceloAvalos.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.8");
 
-            modelBuilder.Entity("PruebaTecnicaMarceloAvalos.Domain.Entities.Addresses", b =>
+            modelBuilder.Entity("PruebaTecnicaMarceloAvalos.Domain.Entities.Address", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,20 +40,17 @@ namespace PruebaTecnicaMarceloAvalos.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UsersId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("ZipCode")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Address");
                 });
 
-            modelBuilder.Entity("PruebaTecnicaMarceloAvalos.Domain.Entities.Currencies", b =>
+            modelBuilder.Entity("PruebaTecnicaMarceloAvalos.Domain.Entities.Currency", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -72,10 +69,10 @@ namespace PruebaTecnicaMarceloAvalos.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Currencies");
+                    b.ToTable("Currency");
                 });
 
-            modelBuilder.Entity("PruebaTecnicaMarceloAvalos.Domain.Entities.Users", b =>
+            modelBuilder.Entity("PruebaTecnicaMarceloAvalos.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,21 +95,21 @@ namespace PruebaTecnicaMarceloAvalos.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("User");
                 });
 
-            modelBuilder.Entity("PruebaTecnicaMarceloAvalos.Domain.Entities.Addresses", b =>
+            modelBuilder.Entity("PruebaTecnicaMarceloAvalos.Domain.Entities.Address", b =>
                 {
-                    b.HasOne("PruebaTecnicaMarceloAvalos.Domain.Entities.Users", "Users")
+                    b.HasOne("PruebaTecnicaMarceloAvalos.Domain.Entities.User", "Users")
                         .WithMany("Addresses")
-                        .HasForeignKey("UsersId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("PruebaTecnicaMarceloAvalos.Domain.Entities.Users", b =>
+            modelBuilder.Entity("PruebaTecnicaMarceloAvalos.Domain.Entities.User", b =>
                 {
                     b.Navigation("Addresses");
                 });

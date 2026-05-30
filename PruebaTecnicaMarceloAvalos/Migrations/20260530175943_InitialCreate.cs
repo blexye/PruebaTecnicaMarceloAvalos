@@ -11,7 +11,7 @@ namespace PruebaTecnicaMarceloAvalos.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Currencies",
+                name: "Currency",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -22,11 +22,11 @@ namespace PruebaTecnicaMarceloAvalos.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Currencies", x => x.Id);
+                    table.PrimaryKey("PK_Currency", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "User",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -38,17 +38,16 @@ namespace PruebaTecnicaMarceloAvalos.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_User", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Addresses",
+                name: "Address",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    UsersId = table.Column<int>(type: "INTEGER", nullable: false),
                     Street = table.Column<string>(type: "TEXT", nullable: false),
                     City = table.Column<string>(type: "TEXT", nullable: false),
                     Country = table.Column<string>(type: "TEXT", nullable: false),
@@ -56,32 +55,32 @@ namespace PruebaTecnicaMarceloAvalos.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                    table.PrimaryKey("PK_Address", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Addresses_Users_UsersId",
-                        column: x => x.UsersId,
-                        principalTable: "Users",
+                        name: "FK_Address_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Addresses_UsersId",
-                table: "Addresses",
-                column: "UsersId");
+                name: "IX_Address_UserId",
+                table: "Address",
+                column: "UserId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Addresses");
+                name: "Address");
 
             migrationBuilder.DropTable(
-                name: "Currencies");
+                name: "Currency");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "User");
         }
     }
 }

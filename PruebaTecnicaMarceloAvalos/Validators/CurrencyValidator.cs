@@ -1,6 +1,6 @@
 ﻿namespace PruebaTecnicaMarceloAvalos.Validators
 {
-	public class AddressesValidator
+	public class CurrencyValidator
 	{
 	}
 }

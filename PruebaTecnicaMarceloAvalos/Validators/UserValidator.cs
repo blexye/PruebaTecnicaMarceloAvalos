@@ -3,9 +3,9 @@ using PruebaTecnicaMarceloAvalos.Domain.Entities;
 
 namespace PruebaTecnicaMarceloAvalos.Validators
 {
-	public class UsersValidator : AbstractValidator<Users>
+	public class UserValidator : AbstractValidator<User>
 	{
-		public UsersValidator()
+		public UserValidator()
 		{
 			RuleFor(p => p.Id)
 				.NotEmpty()
