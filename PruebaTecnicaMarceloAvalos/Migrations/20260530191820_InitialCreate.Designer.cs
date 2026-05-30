@@ -10,7 +10,7 @@ using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
 namespace PruebaTecnicaMarceloAvalos.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260530175943_InitialCreate")]
+    [Migration("20260530191820_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -100,18 +100,18 @@ namespace PruebaTecnicaMarceloAvalos.Migrations
 
             modelBuilder.Entity("PruebaTecnicaMarceloAvalos.Domain.Entities.Address", b =>
                 {
-                    b.HasOne("PruebaTecnicaMarceloAvalos.Domain.Entities.User", "Users")
-                        .WithMany("Addresses")
+                    b.HasOne("PruebaTecnicaMarceloAvalos.Domain.Entities.User", "User")
+                        .WithMany("Address")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Users");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PruebaTecnicaMarceloAvalos.Domain.Entities.User", b =>
                 {
-                    b.Navigation("Addresses");
+                    b.Navigation("Address");
                 });
 #pragma warning restore 612, 618
         }

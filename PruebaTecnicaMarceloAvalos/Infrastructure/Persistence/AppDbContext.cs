@@ -10,8 +10,15 @@ namespace PruebaTecnicaMarceloAvalos.Infrastructure.Persistence
 			{
 			}
 
-			public DbSet<User> User { get; set; }
-			public DbSet<Address> Address { get; set; }
-			public DbSet<Currency> Currency { get; set; }
+		public DbSet<User> User { get; set; }
+		public DbSet<Address> Address { get; set; }
+		public DbSet<Currency> Currency { get; set; }
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<User>()
+				.HasIndex(u => u.Email)
+				.IsUnique();
+		}
 	}
 }

@@ -7,6 +7,6 @@
 		public string Email { get; set; } = string.Empty;
 		public bool IsActive { get; set; } = true;
 		public string PasswordHash { get; set; } = string.Empty;
-		public ICollection<Address> Addresses { get; set; } = new List<Address>();
+		public ICollection<Address> Address { get; set; } = new List<Address>();
 	}
 }

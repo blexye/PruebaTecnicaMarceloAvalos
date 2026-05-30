@@ -7,10 +7,6 @@ namespace PruebaTecnicaMarceloAvalos.Validators
 	{
 		public UserValidator()
 		{
-			RuleFor(p => p.Id)
-				.NotEmpty()
-				.WithMessage("El ID es obligatorio");
-
 			RuleFor(p => p.Name)
 				.NotEmpty()
 				.WithMessage("El nombre es obligatorio");
@@ -18,7 +14,14 @@ namespace PruebaTecnicaMarceloAvalos.Validators
 			RuleFor(p => p.Email)
 				.NotEmpty()
 				.WithMessage("El email es obligatorio")
-				;
+				.EmailAddress()
+				.WithMessage("El email no tiene un formato válido");
+
+			RuleFor(p => p.PasswordHash)
+				.NotEmpty()
+				.WithMessage("La contraseña es obligatoria")
+				.MinimumLength(8)
+				.WithMessage("La contraseña debe tener un mínimo de 8 caracteres");
 		}
 	}
 }
