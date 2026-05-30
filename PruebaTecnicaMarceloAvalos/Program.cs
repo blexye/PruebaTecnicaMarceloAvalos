@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PruebaTecnicaMarceloAvalos.Endpoints;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,10 +22,13 @@ if (app.Environment.IsDevelopment())
 	app.MapOpenApi();
 }
 
-app.MapGet("/", () =>
+/*app.MapGet("/", () =>
 	{
-		return "API funcionando correctamente";
+		return "Hello World!";
 	}
-);
+);*/
+
+app.MapUserEndpoints();
+app.MapAddressEndpoints();
 
 app.Run();

@@ -7,6 +7,7 @@
 		public string Email { get; set; } = string.Empty;
 		public bool IsActive { get; set; } = true;
 		public string PasswordHash { get; set; } = string.Empty;
+		// Un usuario -> muchas direcciones
 		public ICollection<Address> Address { get; set; } = new List<Address>();
 	}
 }

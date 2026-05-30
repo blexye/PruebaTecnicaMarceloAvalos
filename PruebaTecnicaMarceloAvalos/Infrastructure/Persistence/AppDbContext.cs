@@ -14,11 +14,19 @@ namespace PruebaTecnicaMarceloAvalos.Infrastructure.Persistence
 		public DbSet<Address> Address { get; set; }
 		public DbSet<Currency> Currency { get; set; }
 
+		//Método para configurar modelo de datos
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<User>()
 				.HasIndex(u => u.Email)
 				.IsUnique();
+
+			modelBuilder.Entity<User>()
+				.HasMany(u => u.Address)
+				.WithOne(a => a.User)
+				.HasForeignKey(a => a.UserId);
+
+			base.OnModelCreating(modelBuilder);
 		}
 	}
 }

@@ -15,13 +15,6 @@ namespace PruebaTecnicaMarceloAvalos.Validators
 
 			RuleFor(p => p.UserId)
 				.NotEmpty()
-
-				.MustAsync(async (userId, cancellation) =>
-					await _context.Address
-						.AnyAsync(c => c.Id == userId, cancellation)
-				)
-				.WithMessage("El usuario no existe")
-
 				.GreaterThan(0)
 				.WithMessage("El ID del usuario es obligatorio");
 
