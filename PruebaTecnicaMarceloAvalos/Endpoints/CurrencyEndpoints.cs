@@ -3,7 +3,7 @@ using PruebaTecnicaMarceloAvalos.Domain.Entities;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
-using PruebaTecnicaMarceloAvalos.DTOs;
+using PruebaTecnicaMarceloAvalos.Application.DTOs;
 
 namespace PruebaTecnicaMarceloAvalos.Endpoints
 {
@@ -12,12 +12,19 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 		public static async Task MapCurrencyEndpoints(this WebApplication app)
 		{
 			// Crear moneda
-			app.MapPost("/currency", async (Currency currency, IValidator<Currency> validator, AppDbContext db) =>
+			app.MapPost("/currency", async (CreateCurrencyRequest request, IValidator<CreateCurrencyRequest> validator, AppDbContext db) =>
 			{
-				var result = await validator.ValidateAsync(currency);
+				var result = await validator.ValidateAsync(request);
 
 				if (!result.IsValid)
 					return Results.BadRequest(result.Errors);
+
+				var currency = new Currency
+				{
+					Code = request.Code,
+					Name = request.Name,
+					RateToBase = request.RateToBase
+				};
 
 				db.Currency.Add(currency);
 				await db.SaveChangesAsync();
@@ -45,21 +52,22 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 			.WithTags("Currencies");
 
 			// Modificar moneda
-			app.MapPut("/currency/{id}", async (int Id, Currency updateCurrency, IValidator<Currency> validator, AppDbContext db) =>
+			app.MapPut("/currency/{id}", async (int id, UpdateCurrencyRequest request, IValidator<UpdateCurrencyRequest> validator, AppDbContext db) =>
 			{
-				var result = await validator.ValidateAsync(updateCurrency);
+				request.Id = id;
+				var result = await validator.ValidateAsync(request);
 				
 				if (!result.IsValid)
 					return Results.BadRequest(result.Errors);
 
-				var currency = await db.Currency.FindAsync(Id);
+				var currency = await db.Currency.FindAsync(id);
 
 				if (currency is null)
 					return Results.NotFound();
 
-				currency.Code = updateCurrency.Code;
-				currency.Name = updateCurrency.Name;
-				currency.RateToBase = updateCurrency.RateToBase;
+				currency.Code = request.Code;
+				currency.Name = request.Name;
+				currency.RateToBase = request.RateToBase;
 
 				await db.SaveChangesAsync();
 

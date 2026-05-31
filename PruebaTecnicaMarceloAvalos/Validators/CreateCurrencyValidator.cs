@@ -1,25 +1,21 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using PruebaTecnicaMarceloAvalos.Domain.Entities;
+using PruebaTecnicaMarceloAvalos.Application.DTOs;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
-using SQLitePCL;
 
 namespace PruebaTecnicaMarceloAvalos.Validators
 {
-	public class CurrencyValidator : AbstractValidator<Currency>
+	public class CreateCurrencyValidator : AbstractValidator<CreateCurrencyRequest>
 	{
-		private readonly AppDbContext _context;
-		public CurrencyValidator(AppDbContext context)
+		public CreateCurrencyValidator(AppDbContext context)
 		{
-			_context = context;
-
-			RuleFor(p => p.Code)
+			RuleFor(x => x.Code)
 				.NotEmpty()
 				.WithMessage("El código no puede estar vacío")
 
 				.MustAsync(async (code, cancellation) =>
 				{
-					return !await _context.Currency
+					return !await context.Currency
 						.AnyAsync(c => c.Code == code, cancellation);
 				})
 				.WithMessage("El código ya existe");

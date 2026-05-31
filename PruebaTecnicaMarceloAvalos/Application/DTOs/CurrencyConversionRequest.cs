@@ -1,4 +1,4 @@
-﻿namespace PruebaTecnicaMarceloAvalos.DTOs
+﻿namespace PruebaTecnicaMarceloAvalos.Application.DTOs
 {
 	public class CurrencyConversionRequest
 	{
