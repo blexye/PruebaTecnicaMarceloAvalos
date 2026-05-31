@@ -1,4 +1,6 @@
-﻿namespace PruebaTecnicaMarceloAvalos.Domain.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace PruebaTecnicaMarceloAvalos.Domain.Entities
 {
 	public class Address
 	{
@@ -6,6 +8,7 @@
 		//FK
 		public int UserId { get; set; }
 		//Propiedad de nagevación
+		[JsonIgnore]
 		public User User { get; set; } = null!;
 		public string Street { get; set; } = string.Empty;
 		public string City { get; set; } = string.Empty;

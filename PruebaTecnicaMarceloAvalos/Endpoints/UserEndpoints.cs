@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using System.ComponentModel.DataAnnotations;
+using FluentValidation;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using PruebaTecnicaMarceloAvalos.Domain.Entities;
 using PruebaTecnicaMarceloAvalos.Infrastructure;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
 
 namespace PruebaTecnicaMarceloAvalos.Endpoints
 {
@@ -11,19 +14,26 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 		public static void MapUserEndpoints(this WebApplication app)
 		{
 			// Crear usuario
-			app.MapPost("/users", async (User user, AppDbContext db) =>
+			app.MapPost("/users", async (User user, IValidator<User> validator, AppDbContext db) =>
 			{
+				var result = await validator.ValidateAsync(user);
+
+				if (!result.IsValid)
+					return Results.BadRequest(result.Errors);
+
 				db.User.Add(user);
 				await db.SaveChangesAsync();
 
 				return Results.Created($"/users/{user.Id}", user);
-			});
+			})
+			.WithTags("Users");
 
 			// Listar usuarios
 			app.MapGet("/users", async(AppDbContext db) =>
 			{
 				return await db.User.ToListAsync();
-			});
+			})
+			.WithTags("Users");
 
 			// Obtener usuario por ID
 			app.MapGet("/users/{id}", async (int Id, AppDbContext db) =>
@@ -33,11 +43,17 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 				return user is null
 					? Results.NotFound()
 					: Results.Ok(user);
-			});
+			})
+			.WithTags("Users");
 
 			// Modificar usuario
-			app.MapPut("/users/{id}", async (int Id, User updateUser, AppDbContext db) =>
+			app.MapPut("/users/{id}", async (int Id, User updateUser, IValidator<User> validator, AppDbContext db) =>
 			{
+				var result = await validator.ValidateAsync(updateUser);
+
+				if (!result.IsValid)
+					return Results.BadRequest(result.Errors);
+
 				var user = await db.User.FindAsync(Id);
 
 				if (user is null)
@@ -50,12 +66,13 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 				await db.SaveChangesAsync();
 
 				return Results.NoContent();
-			});
+			})
+			.WithTags("Users");
 
 			// Eliminar usuario
 			app.MapDelete("/users/{id}", async (int Id, AppDbContext db) =>
 			{
-				var user = await db.User.FindAsync();
+				var user = await db.User.FindAsync(Id);
 
 				if (user is null)
 					return Results.NotFound();
@@ -64,7 +81,8 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 				await db.SaveChangesAsync();
 
 				return Results.NoContent();
-			});
+			})
+			.WithTags("Users");
 		}
 	}
 }

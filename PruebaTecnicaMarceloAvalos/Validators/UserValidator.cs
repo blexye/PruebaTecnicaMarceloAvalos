@@ -12,9 +12,10 @@ namespace PruebaTecnicaMarceloAvalos.Validators
 				.WithMessage("El nombre es obligatorio");
 
 			RuleFor(p => p.Email)
+				.Cascade(CascadeMode.Stop)
 				.NotEmpty()
 				.WithMessage("El email es obligatorio")
-				.EmailAddress()
+				.Matches(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 				.WithMessage("El email no tiene un formato válido");
 
 			RuleFor(p => p.PasswordHash)
