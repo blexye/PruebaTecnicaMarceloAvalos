@@ -15,7 +15,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 	options.SerializerOptions.PropertyNameCaseInsensitive = true;
 });
 
-builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateUserValidator>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 	options.UseSqlite(

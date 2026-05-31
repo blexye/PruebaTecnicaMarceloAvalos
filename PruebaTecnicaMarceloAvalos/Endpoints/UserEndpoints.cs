@@ -2,6 +2,8 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using BCrypt;
+using PruebaTecnicaMarceloAvalos.Application.DTOs;
 using PruebaTecnicaMarceloAvalos.Domain.Entities;
 using PruebaTecnicaMarceloAvalos.Infrastructure;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
@@ -14,12 +16,19 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 		public static void MapUserEndpoints(this WebApplication app)
 		{
 			// Crear usuario
-			app.MapPost("/users", async (User user, IValidator<User> validator, AppDbContext db) =>
+			app.MapPost("/users", async (CreateUserRequest request, IValidator<CreateUserRequest> validator, AppDbContext db) =>
 			{
-				var result = await validator.ValidateAsync(user);
+				var result = await validator.ValidateAsync(request);
 
 				if (!result.IsValid)
 					return Results.BadRequest(result.Errors);
+
+				var user = new User
+				{
+					Name = request.Name,
+					Email = request.Email,
+					PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password)
+				};
 
 				db.User.Add(user);
 				await db.SaveChangesAsync();
@@ -47,21 +56,22 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 			.WithTags("Users");
 
 			// Modificar usuario
-			app.MapPut("/users/{id}", async (int Id, User updateUser, IValidator<User> validator, AppDbContext db) =>
+			app.MapPut("/users/{id}", async (int id, UpdateUserRequest request, IValidator<UpdateUserRequest> validator, AppDbContext db) =>
 			{
-				var result = await validator.ValidateAsync(updateUser);
+				request.Id = id;
+				var result = await validator.ValidateAsync(request);
 
 				if (!result.IsValid)
 					return Results.BadRequest(result.Errors);
 
-				var user = await db.User.FindAsync(Id);
+				var user = await db.User.FindAsync(id);
 
 				if (user is null)
 					return Results.NotFound();
 
-				user.Name = updateUser.Name;
-				user.Email = updateUser.Email;
-				user.IsActive = updateUser.IsActive;
+				user.Name = request.Name;
+				user.Email = request.Email;
+				user.IsActive = request.IsActive;
 
 				await db.SaveChangesAsync();
 
