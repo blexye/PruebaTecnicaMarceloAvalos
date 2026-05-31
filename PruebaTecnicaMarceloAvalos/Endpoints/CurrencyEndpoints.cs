@@ -9,7 +9,7 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 {
 	public static class CurrencyEndpoints
 	{
-		public static async Task MapCurrencyEndpoints(this WebApplication app)
+		public static void MapCurrencyEndpoints(this WebApplication app)
 		{
 			// Crear moneda
 			app.MapPost("/currency", async (CreateCurrencyRequest request, IValidator<CreateCurrencyRequest> validator, AppDbContext db) =>
@@ -111,7 +111,7 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 
 				var amountInBase = request.Amount / fromCurrency.RateToBase;
 
-				var convertedAmount = amountInBase * toCurrency.RateToBase;
+				var convertedAmount = Math.Round(amountInBase * toCurrency.RateToBase, 2);
 
 				return Results.Ok(new
 				{

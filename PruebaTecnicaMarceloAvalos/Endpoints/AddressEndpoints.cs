@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using PruebaTecnicaMarceloAvalos.Domain.Entities;
 using PruebaTecnicaMarceloAvalos.Infrastructure;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
+using PruebaTecnicaMarceloAvalos.Application.DTOs;
 
 namespace PruebaTecnicaMarceloAvalos.Endpoints
 {
@@ -13,9 +14,9 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 		public static void MapAddressEndpoints(this WebApplication app)
 		{
 			// Crear dirección para un usuario
-			app.MapPost("/users/{userId}/addresses", async (int userId, IValidator<Address> validator, Address address, AppDbContext db) =>
+			app.MapPost("/users/{userId}/addresses", async (int userId, CreateAddressRequest request, IValidator<CreateAddressRequest> validator, AppDbContext db) =>
 			{
-				var result = await validator.ValidateAsync(address);
+				var result = await validator.ValidateAsync(request);
 
 				if (!result.IsValid)
 					return Results.BadRequest(result.Errors);
@@ -26,7 +27,14 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 				if (!userExists)
 					return Results.NotFound($"El usuario {userId} no existe.");
 
-				address.UserId = userId;
+				var address = new Address
+				{
+					UserId = userId,
+					Street = request.Street,
+					City = request.City,
+					Country = request.Country,
+					ZipCode = request.ZipCode
+				};
 
 				db.Address.Add(address);
 				await db.SaveChangesAsync();
@@ -49,22 +57,22 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 			.WithTags("Addresses");
 
 			// Modificar dirección
-			app.MapPut("/addresses/{addressId}", async (int AddressId, Address updateAddress, IValidator<Address> validator, AppDbContext db) =>
+			app.MapPut("/addresses/{addressId}", async (int addressId, UpdateAddressRequest request, IValidator<UpdateAddressRequest> validator, AppDbContext db) =>
 			{
-				var result = await validator.ValidateAsync(updateAddress);
+				var result = await validator.ValidateAsync(request);
 
 				if (!result.IsValid)
 					return Results.BadRequest(result.Errors);
 
-				var address = await db.Address.FindAsync(AddressId);
+				var address = await db.Address.FindAsync(addressId);
 
 				if (address is null)
 					return Results.NotFound();
 
-				address.Street = updateAddress.Street;
-				address.City = updateAddress.City;
-				address.Country = updateAddress.Country;
-				address.ZipCode = updateAddress.ZipCode;
+				address.Street = request.Street;
+				address.City = request.City;
+				address.Country = request.Country;
+				address.ZipCode = request.ZipCode;
 
 				await db.SaveChangesAsync();
 
@@ -73,9 +81,9 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 			.WithTags("Addresses");
 
 			// Eliminar dirección
-			app.MapDelete("/addresses/{addressId}", async (int AddressId, AppDbContext db) =>
+			app.MapDelete("/addresses/{addressId}", async (int addressId, AppDbContext db) =>
 			{
-				var address = await db.Address.FindAsync(AddressId);
+				var address = await db.Address.FindAsync(addressId);
 
 				if (address is null)
 					return Results.NotFound();

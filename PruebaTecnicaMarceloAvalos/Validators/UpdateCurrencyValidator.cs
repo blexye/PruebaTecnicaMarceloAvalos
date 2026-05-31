@@ -10,10 +10,10 @@ namespace PruebaTecnicaMarceloAvalos.Validators
 		public UpdateCurrencyValidator(AppDbContext context)
 		{
 			RuleFor(p => p.Id)
-			.NotEmpty()
-			.WithMessage("El ID del código es obligatorio")
-			.GreaterThan(0)
-			.WithMessage("El ID debe ser mayor a 0");
+				.NotEmpty()
+				.WithMessage("El ID del código es obligatorio")
+				.GreaterThan(0)
+				.WithMessage("El ID debe ser mayor a 0");
 
 			RuleFor(x => x.Code)
 				.NotEmpty()

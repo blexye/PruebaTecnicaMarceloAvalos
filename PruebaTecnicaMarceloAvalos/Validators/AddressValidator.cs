@@ -8,11 +8,8 @@ namespace PruebaTecnicaMarceloAvalos.Validators
 {
 	public class AddressValidator : AbstractValidator<Address>
 	{
-		private readonly AppDbContext _context;
 		public AddressValidator(AppDbContext context)
 		{
-			_context = context;
-
 			RuleFor(p => p.UserId)
 				.NotEmpty()
 				.GreaterThan(0)

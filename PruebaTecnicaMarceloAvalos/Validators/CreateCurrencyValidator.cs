@@ -7,7 +7,7 @@ namespace PruebaTecnicaMarceloAvalos.Validators
 {
 	public class CreateCurrencyValidator : AbstractValidator<CreateCurrencyRequest>
 	{
-		public CreateCurrencyValidator(AppDbContext context)
+		public CreateCurrencyValidator (AppDbContext context)
 		{
 			RuleFor(x => x.Code)
 				.NotEmpty()
