@@ -39,5 +39,6 @@ if (app.Environment.IsDevelopment())
 
 app.MapUserEndpoints();
 app.MapAddressEndpoints();
+app.MapCurrencyEndpoints();
 
 app.Run();
