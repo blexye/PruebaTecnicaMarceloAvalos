@@ -3,7 +3,7 @@ using PruebaTecnicaMarceloAvalos.Application.DTOs;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace PruebaTecnicaMarceloAvalos.Validators
+namespace PruebaTecnicaMarceloAvalos.Application.Validators
 {
 	public class UpdateCurrencyValidator : AbstractValidator<UpdateCurrencyRequest>
 	{

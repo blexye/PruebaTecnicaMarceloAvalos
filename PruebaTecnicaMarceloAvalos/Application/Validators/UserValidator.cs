@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using PruebaTecnicaMarceloAvalos.Domain.Entities;
 
-namespace PruebaTecnicaMarceloAvalos.Validators
+namespace PruebaTecnicaMarceloAvalos.Application.Validators
 {
 	public class UserValidator : AbstractValidator<User>
 	{

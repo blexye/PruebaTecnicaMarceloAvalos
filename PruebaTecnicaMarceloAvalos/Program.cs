@@ -1,8 +1,8 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using PruebaTecnicaMarceloAvalos.Application.Validators;
 using PruebaTecnicaMarceloAvalos.Endpoints;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
-using PruebaTecnicaMarceloAvalos.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 

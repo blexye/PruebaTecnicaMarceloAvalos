@@ -1,15 +1,13 @@
 ﻿using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using PruebaTecnicaMarceloAvalos.Application.DTOs;
-using PruebaTecnicaMarceloAvalos.Domain.Entities;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
-using SQLitePCL;
+using Microsoft.EntityFrameworkCore;
 
-namespace PruebaTecnicaMarceloAvalos.Validators
+namespace PruebaTecnicaMarceloAvalos.Application.Validators
 {
-	public class CreateAddressValidator : AbstractValidator<CreateAddressRequest>
+	public class UpdateAddressValidator : AbstractValidator<UpdateAddressRequest>
 	{
-		public CreateAddressValidator (AppDbContext db)
+		public UpdateAddressValidator(AppDbContext db)
 		{
 			RuleFor(p => p.Street)
 				.NotEmpty()

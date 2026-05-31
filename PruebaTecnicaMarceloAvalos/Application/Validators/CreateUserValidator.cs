@@ -1,13 +1,13 @@
 ﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using PruebaTecnicaMarceloAvalos.Application.DTOs;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
 
-namespace PruebaTecnicaMarceloAvalos.Validators
+namespace PruebaTecnicaMarceloAvalos.Application.Validators
 {
-	public class UpdateUserValidator : AbstractValidator<UpdateUserRequest>
+	public class CreateUserValidator : AbstractValidator<CreateUserRequest>
 	{
-		public UpdateUserValidator(AppDbContext context)
+		public CreateUserValidator(AppDbContext context)
 		{
 			RuleFor(p => p.Name)
 				.NotEmpty()
@@ -20,12 +20,19 @@ namespace PruebaTecnicaMarceloAvalos.Validators
 				.Matches(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 				.WithMessage("El email no tiene un formato válido")
 
-				.MustAsync(async (request, email, cancellation) =>
+				.MustAsync(async (email, cancellation) =>
 				{
 					return !await context.User
-					.AnyAsync(c => c.Email == email && c.Id != request.Id, cancellation);
+					.AnyAsync(c => c.Email == email, cancellation);
 				})
 				.WithMessage("El email ya existe");
+
+			RuleFor(p => p.Password)
+				.NotEmpty()
+				.WithMessage("La contraseña es obligatoria")
+				.MinimumLength(8)
+				.WithMessage("La contraseña debe tener un mínimo de 8 caracteres");
 		}
+		
 	}
 }

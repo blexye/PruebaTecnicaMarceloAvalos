@@ -4,7 +4,7 @@ using PruebaTecnicaMarceloAvalos.Domain.Entities;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
 using SQLitePCL;
 
-namespace PruebaTecnicaMarceloAvalos.Validators
+namespace PruebaTecnicaMarceloAvalos.Application.Validators
 {
 	public class AddressValidator : AbstractValidator<Address>
 	{
