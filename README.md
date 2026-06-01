@@ -1,29 +1,74 @@
-# PruebaTecnicaMarceloAvalos
+# Prueba Técnica - API REST .NET
 
-Versión .NET: 10.0
+## Versión de .NET
 
-- Cómo correr el proyecto
-1. Clonar repositorio:
-git clone: https://github.com/blexye/PruebaTecnicaMarceloAvalos.git
+.NET 10.0
 
-2. Ejecutar el proyecto:
-  Importar y correr el proyecto desde Visual Studio
-  Se despliega el navegador
-  Para las pruebas con swagger, insertar "/swagger" al final del link
-  Ejemplo: https://localhost:7230/ -> https://localhost:7230/swagger
+---
 
-- Crear base de datos (si no está creada aún):
-1. Se crea la migración si no existe:
+## Cómo correr el proyecto
+
+### Clonar el repositorio
+
+```bash
+git clone https://github.com/blexye/PruebaTecnicaMarceloAvalos.git
+```
+
+### Ejecutar el proyecto
+
+1. Abrir la solución en Visual Studio.
+2. Ejecutar el proyecto.
+
+### Acceder a Swagger
+
+Una vez iniciada la aplicación, agregar `/swagger` al final de la URL.
+
+Ejemplo:
+
+```text
+https://localhost:7230/swagger
+```
+
+---
+
+## Crear la base de datos
+
+### Crear la migración (si no existe)
+
+```bash
 dotnet ef migrations add InitialCreate
+```
 
-2. Se crea la base de datos y se aplican las migraciones:
+### Crear la base de datos y aplicar las migraciones
+
+```bash
 dotnet ef database update
+```
 
-- API KEY de prueba:
+---
+
+## Headers requeridos
+
+```http
 Content-Type: application/json
 X-API-KEY: contra123
+```
 
-- Lo que no se implementó:
-1. Filtrado de usuario por IsActive = true
-2. Agregado del campo X-APY-KEY en Swagger
-3. Mejor optimización de la API en general
+## Funcionalidades implementadas
+
+- CRUD de Usuarios
+- CRUD de Direcciones
+- Validaciones con FluentValidation
+- Contraseñas hasheadas con BCrypt
+- Conversión de monedas
+- API Key
+- Swagger
+- SQLite
+
+---
+
+## Funcionalidades no implementadas
+
+- Filtrado de usuarios por `IsActive = true`
+- Agregado automático del header `X-API-KEY` en Swagger
+- Mejoras y optimizaciones adicionales de la API
