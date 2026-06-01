@@ -1,13 +1,13 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using PruebaTecnicaMarceloAvalos.Application.DTOs;
+using PruebaTecnicaMarceloAvalos.Application.Users.Commands;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
 
 namespace PruebaTecnicaMarceloAvalos.Application.Validators
 {
-	public class CreateUserValidator : AbstractValidator<CreateUserRequest>
+	public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 	{
-		public CreateUserValidator(AppDbContext context)
+		public CreateUserCommandValidator(AppDbContext context)
 		{
 			RuleFor(p => p.Name)
 				.NotEmpty()
@@ -33,6 +33,7 @@ namespace PruebaTecnicaMarceloAvalos.Application.Validators
 				.MinimumLength(8)
 				.WithMessage("La contraseña debe tener un mínimo de 8 caracteres");
 		}
-		
+
 	}
 }
+

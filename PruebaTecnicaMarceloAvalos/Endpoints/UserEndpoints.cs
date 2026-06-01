@@ -1,13 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using FluentValidation;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using BCrypt;
 using PruebaTecnicaMarceloAvalos.Application.DTOs;
 using PruebaTecnicaMarceloAvalos.Domain.Entities;
-using PruebaTecnicaMarceloAvalos.Infrastructure;
+using PruebaTecnicaMarceloAvalos.Application.Users.Commands;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
+using PruebaTecnicaMarceloAvalos.Application.Users.DTOs;
+using PruebaTecnicaMarceloAvalos.Application.Users.Queries;
 
 namespace PruebaTecnicaMarceloAvalos.Endpoints
 {
@@ -16,38 +14,65 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 		public static void MapUserEndpoints(this WebApplication app)
 		{
 			// Crear usuario
-			app.MapPost("/users", async (CreateUserRequest request, IValidator<CreateUserRequest> validator, AppDbContext db) =>
+			app.MapPost("/users", async (CreateUserCommand command, IValidator<CreateUserCommand> validator, AppDbContext db) =>
 			{
-				var result = await validator.ValidateAsync(request);
+				var result = await validator.ValidateAsync(command);
 
 				if (!result.IsValid)
 					return Results.BadRequest(result.Errors);
 
 				var user = new User
 				{
-					Name = request.Name,
-					Email = request.Email,
-					PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password)
+					Name = command.Name,
+					Email = command.Email,
+					PasswordHash = BCrypt.Net.BCrypt.HashPassword(command.Password)
 				};
 
 				db.User.Add(user);
 				await db.SaveChangesAsync();
 
-				return Results.Created($"/users/{user.Id}", user);
+				var response = new UserResponse
+				(
+					user.Name,
+					user.Email
+				);
+
+				return Results.Created($"/users/{user.Id}", response);
 			})
 			.WithTags("Users");
 
 			// Listar usuarios
 			app.MapGet("/users", async(AppDbContext db) =>
 			{
-				return await db.User.ToListAsync();
+				var query = new GetAllUsersQuery();
+
+				var users = await db.User
+					.Select(u => new
+					{
+						u.Id,
+						u.Name,
+						u.Email
+					})
+					.ToListAsync();
+
+				return Results.Ok(users);
 			})
 			.WithTags("Users");
 
 			// Obtener usuario por ID
-			app.MapGet("/users/{id}", async (int Id, AppDbContext db) =>
+			app.MapGet("/users/{id}", async (int id, AppDbContext db) =>
 			{
-				var user = await db.User.FindAsync(Id);
+				var query = new GetUserByIdQuery(id);
+
+				var user = await db.User
+					.Where(u => u.Id == query.Id)
+					.Select(u => new
+					{
+						u.Id,
+						u.Name,
+						u.Email
+					})
+					.FirstOrDefaultAsync();
 
 				return user is null
 					? Results.NotFound()
@@ -56,10 +81,12 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 			.WithTags("Users");
 
 			// Modificar usuario
-			app.MapPut("/users/{id}", async (int id, UpdateUserRequest request, IValidator<UpdateUserRequest> validator, AppDbContext db) =>
+			app.MapPut("/users/{id}", async (int id, UpdateUserCommand command, IValidator<UpdateUserCommand> validator, AppDbContext db) =>
 			{
-				request.Id = id;
-				var result = await validator.ValidateAsync(request);
+				if (id <= 0)
+					return Results.BadRequest("Id inválido");
+
+				var result = await validator.ValidateAsync(command);
 
 				if (!result.IsValid)
 					return Results.BadRequest(result.Errors);
@@ -69,9 +96,15 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 				if (user is null)
 					return Results.NotFound();
 
-				user.Name = request.Name;
-				user.Email = request.Email;
-				user.IsActive = request.IsActive;
+				var emailExists = await db.User
+					.AnyAsync(u => u.Email == command.Email && u.Id != id);
+
+				if (emailExists)
+					return Results.BadRequest("El email ya está en uso");
+
+				user.Name = command.Name;
+				user.Email = command.Email;
+				user.IsActive = command.IsActive;
 
 				await db.SaveChangesAsync();
 
@@ -80,9 +113,9 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 			.WithTags("Users");
 
 			// Eliminar usuario
-			app.MapDelete("/users/{id}", async (int Id, AppDbContext db) =>
+			app.MapDelete("/users/{id}", async (int id, AppDbContext db) =>
 			{
-				var user = await db.User.FindAsync(Id);
+				var user = await db.User.FindAsync(id);
 
 				if (user is null)
 					return Results.NotFound();
