@@ -58,12 +58,13 @@ X-API-KEY: contra123
 
 - CRUD de Usuarios
 - CRUD de Direcciones
-- Validaciones con FluentValidation
+- Módulo de conversión de divisas
+- Seguridad por API Key
+- EntityFramework con SQLite
+- Validaciones de las peticiones con FluentValidation
+- Patrón CQRS
 - Contraseñas hasheadas con BCrypt
-- Conversión de monedas
-- API Key
 - Swagger
-- SQLite
 
 ---
 
