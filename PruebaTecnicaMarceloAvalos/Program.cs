@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PruebaTecnicaMarceloAvalos.Application.Validators;
 using PruebaTecnicaMarceloAvalos.Endpoints;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
-//using PruebaTecnicaMarceloAvalos.Middleware;
+using PruebaTecnicaMarceloAvalos.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,7 +38,7 @@ if (app.Environment.IsDevelopment())
 	}
 );*/
 
-//app.UseMiddleware<ApiKeyMiddleware>();
+app.UseMiddleware<ApiKeyMiddleware>();
 
 app.MapUserEndpoints();
 app.MapAddressEndpoints();
