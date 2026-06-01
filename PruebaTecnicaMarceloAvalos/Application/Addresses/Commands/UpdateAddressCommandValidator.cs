@@ -1,20 +1,16 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using PruebaTecnicaMarceloAvalos.Domain.Entities;
+using PruebaTecnicaMarceloAvalos.Application.DTOs;
+using PruebaTecnicaMarceloAvalos.Application.Addresses.Commands;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
 using SQLitePCL;
 
 namespace PruebaTecnicaMarceloAvalos.Application.Validators
 {
-	public class AddressValidator : AbstractValidator<Address>
+	public class UpdateAddressCommandValidator : AbstractValidator<UpdateAddressCommand>
 	{
-		public AddressValidator(AppDbContext context)
+		public UpdateAddressCommandValidator(AppDbContext db)
 		{
-			RuleFor(p => p.UserId)
-				.NotEmpty()
-				.GreaterThan(0)
-				.WithMessage("El ID del usuario es obligatorio");
-
 			RuleFor(p => p.Street)
 				.NotEmpty()
 				.WithMessage("El nombre de la calle es obligatorio");

@@ -70,7 +70,8 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 					{
 						u.Id,
 						u.Name,
-						u.Email
+						u.Email,
+						u.Address
 					})
 					.FirstOrDefaultAsync();
 

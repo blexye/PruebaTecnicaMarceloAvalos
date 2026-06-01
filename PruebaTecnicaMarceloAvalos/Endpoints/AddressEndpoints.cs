@@ -1,11 +1,9 @@
-﻿using System.Net;
-using FluentValidation;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PruebaTecnicaMarceloAvalos.Domain.Entities;
-using PruebaTecnicaMarceloAvalos.Infrastructure;
+using PruebaTecnicaMarceloAvalos.Application.Addresses.Commands;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
-using PruebaTecnicaMarceloAvalos.Application.DTOs;
+using PruebaTecnicaMarceloAvalos.Application.Addresses.Queries;
 
 namespace PruebaTecnicaMarceloAvalos.Endpoints
 {
@@ -14,9 +12,9 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 		public static void MapAddressEndpoints(this WebApplication app)
 		{
 			// Crear dirección para un usuario
-			app.MapPost("/users/{userId}/addresses", async (int userId, CreateAddressRequest request, IValidator<CreateAddressRequest> validator, AppDbContext db) =>
+			app.MapPost("/users/{userId}/addresses", async (int userId, CreateAddressCommand command, IValidator<CreateAddressCommand> validator, AppDbContext db) =>
 			{
-				var result = await validator.ValidateAsync(request);
+				var result = await validator.ValidateAsync(command);
 
 				if (!result.IsValid)
 					return Results.BadRequest(result.Errors);
@@ -30,10 +28,10 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 				var address = new Address
 				{
 					UserId = userId,
-					Street = request.Street,
-					City = request.City,
-					Country = request.Country,
-					ZipCode = request.ZipCode
+					Street = command.Street,
+					City = command.City,
+					Country = command.Country,
+					ZipCode = command.ZipCode
 				};
 
 				db.Address.Add(address);
@@ -46,8 +44,10 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 			// Listar las direcciones de un usuario
 			app.MapGet("/users/{userId}/addresses", async (int UserId, AppDbContext db) =>
 			{
+				var query = new GetAddressByIdQuery(UserId);
+				
 				var addresses = await db.Address
-					.Where(a => a.UserId == UserId)
+					.Where(u => u.UserId == query.Id)
 					.ToListAsync();
 
 				return addresses is null
@@ -57,9 +57,9 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 			.WithTags("Addresses");
 
 			// Modificar dirección
-			app.MapPut("/addresses/{addressId}", async (int addressId, UpdateAddressRequest request, IValidator<UpdateAddressRequest> validator, AppDbContext db) =>
+			app.MapPut("/addresses/{addressId}", async (int addressId, UpdateAddressCommand command, IValidator<UpdateAddressCommand> validator, AppDbContext db) =>
 			{
-				var result = await validator.ValidateAsync(request);
+				var result = await validator.ValidateAsync(command);
 
 				if (!result.IsValid)
 					return Results.BadRequest(result.Errors);
@@ -69,10 +69,10 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 				if (address is null)
 					return Results.NotFound();
 
-				address.Street = request.Street;
-				address.City = request.City;
-				address.Country = request.Country;
-				address.ZipCode = request.ZipCode;
+				address.Street = command.Street;
+				address.City = command.City;
+				address.Country = command.Country;
+				address.ZipCode = command.ZipCode;
 
 				await db.SaveChangesAsync();
 
