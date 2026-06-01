@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using PruebaTecnicaMarceloAvalos.Application.DTOs;
 using PruebaTecnicaMarceloAvalos.Domain.Entities;
 using PruebaTecnicaMarceloAvalos.Application.Users.Commands;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
@@ -84,9 +83,6 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 			// Modificar usuario
 			app.MapPut("/users/{id}", async (int id, UpdateUserCommand command, IValidator<UpdateUserCommand> validator, AppDbContext db) =>
 			{
-				if (id <= 0)
-					return Results.BadRequest("Id inválido");
-
 				var result = await validator.ValidateAsync(command);
 
 				if (!result.IsValid)
@@ -101,7 +97,7 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 					.AnyAsync(u => u.Email == command.Email && u.Id != id);
 
 				if (emailExists)
-					return Results.BadRequest("El email ya está en uso");
+					return Results.BadRequest("El email ya existe");
 
 				user.Name = command.Name;
 				user.Email = command.Email;

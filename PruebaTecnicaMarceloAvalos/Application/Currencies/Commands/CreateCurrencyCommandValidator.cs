@@ -1,13 +1,13 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using PruebaTecnicaMarceloAvalos.Application.DTOs;
+using PruebaTecnicaMarceloAvalos.Application.Currencies.Commands;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
 
 namespace PruebaTecnicaMarceloAvalos.Application.Validators
 {
-	public class CreateCurrencyValidator : AbstractValidator<CreateCurrencyRequest>
+	public class CreateCurrencyCommandValidator : AbstractValidator<CreateCurrencyCommand>
 	{
-		public CreateCurrencyValidator (AppDbContext context)
+		public CreateCurrencyCommandValidator(AppDbContext context)
 		{
 			RuleFor(x => x.Code)
 				.NotEmpty()
@@ -25,7 +25,7 @@ namespace PruebaTecnicaMarceloAvalos.Application.Validators
 				.WithMessage("El nombre no puede estar vacío");
 
 			RuleFor(p => p.RateToBase)
-				.NotEmpty()
+				.GreaterThanOrEqualTo(1)
 				.WithMessage("El campo es obligatorio");
 		}
 	}

@@ -1,9 +1,6 @@
 ﻿using FluentValidation;
-using Microsoft.EntityFrameworkCore;
-using PruebaTecnicaMarceloAvalos.Application.DTOs;
 using PruebaTecnicaMarceloAvalos.Application.Addresses.Commands;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
-using SQLitePCL;
 
 namespace PruebaTecnicaMarceloAvalos.Application.Validators
 {

@@ -1,9 +1,9 @@
 ﻿using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
 using PruebaTecnicaMarceloAvalos.Domain.Entities;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
-using PruebaTecnicaMarceloAvalos.Application.DTOs;
+using PruebaTecnicaMarceloAvalos.Application.Currencies.Commands;
+using PruebaTecnicaMarceloAvalos.Application.Currencies.Queries;
 
 namespace PruebaTecnicaMarceloAvalos.Endpoints
 {
@@ -12,24 +12,33 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 		public static void MapCurrencyEndpoints(this WebApplication app)
 		{
 			// Crear moneda
-			app.MapPost("/currency", async (CreateCurrencyRequest request, IValidator<CreateCurrencyRequest> validator, AppDbContext db) =>
+			app.MapPost("/currency", async (CreateCurrencyCommand command, IValidator<CreateCurrencyCommand> validator, AppDbContext db) =>
 			{
-				var result = await validator.ValidateAsync(request);
+				var result = await validator.ValidateAsync(command);
 
 				if (!result.IsValid)
 					return Results.BadRequest(result.Errors);
 
 				var currency = new Currency
 				{
-					Code = request.Code,
-					Name = request.Name,
-					RateToBase = request.RateToBase
+					Code = command.Code,
+					Name = command.Name,
+					RateToBase = command.RateToBase
 				};
 
 				db.Currency.Add(currency);
 				await db.SaveChangesAsync();
 
-				return Results.Created($"/currency{currency.Id}", currency);
+				var currencies = await db.Currency
+					.Select(u => new
+					{
+						u.Code,
+						u.Name,
+						u.RateToBase
+					})
+					.ToListAsync();
+
+				return Results.Created();
 			})
 			.WithTags("Currencies");
 
@@ -41,9 +50,19 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 			.WithTags("Currencies");
 
 			// Obtener moneda por ID
-			app.MapGet("/currency/{id}", async (int Id, AppDbContext db) =>
+			app.MapGet("/currency/{id}", async (int id, AppDbContext db) =>
 			{
-				var currency = await db.Currency.FindAsync(Id);
+				var query = new GetCurrencyByIdQuery(id);
+
+				var currency = await db.Currency
+					.Where(u => u.Id == query.Id)
+					.Select(u => new
+					{
+						u.Name,
+						u.Code,
+						u.RateToBase
+					})
+					.FirstOrDefaultAsync();
 
 				return currency is null
 					? Results.NotFound()
@@ -52,10 +71,9 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 			.WithTags("Currencies");
 
 			// Modificar moneda
-			app.MapPut("/currency/{id}", async (int id, UpdateCurrencyRequest request, IValidator<UpdateCurrencyRequest> validator, AppDbContext db) =>
+			app.MapPut("/currency/{id}", async (int id, UpdateCurrencyCommand command, IValidator<UpdateCurrencyCommand> validator, AppDbContext db) =>
 			{
-				request.Id = id;
-				var result = await validator.ValidateAsync(request);
+				var result = await validator.ValidateAsync(command);
 				
 				if (!result.IsValid)
 					return Results.BadRequest(result.Errors);
@@ -65,9 +83,15 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 				if (currency is null)
 					return Results.NotFound();
 
-				currency.Code = request.Code;
-				currency.Name = request.Name;
-				currency.RateToBase = request.RateToBase;
+				var codeExists = await db.Currency
+					.AnyAsync(u => u.Code == command.Code && u.Id != id);
+
+				if (codeExists)
+					return Results.BadRequest("El código ya existe");
+
+				currency.Code = command.Code;
+				currency.Name = command.Name;
+				currency.RateToBase = command.RateToBase;
 
 				await db.SaveChangesAsync();
 
@@ -91,17 +115,17 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 			.WithTags("Currencies");
 
 			// Conversión de divisas
-			app.MapPost("/currency/convert", async (CurrencyConversionRequest request, AppDbContext db) =>
+			app.MapPost("/currency/convert", async (CurrencyConversionCommand command, IValidator<CurrencyConversionCommand> validator, AppDbContext db) =>
 			{
 				// Moneda origen
 				var fromCurrency = await db.Currency
 					.FirstOrDefaultAsync(c =>
-						c.Code == request.From);
+						c.Code == command.From);
 
 				// Moneda destino
 				var toCurrency = await db.Currency
 					.FirstOrDefaultAsync(c =>
-						c.Code == request.To);
+						c.Code == command.To);
 
 				if (fromCurrency is null)
 					return Results.NotFound($"La moneda {fromCurrency} no existe.");
@@ -109,15 +133,15 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 				if (toCurrency is null)
 					return Results.NotFound($"La moneda {toCurrency} no existe");
 
-				var amountInBase = request.Amount / fromCurrency.RateToBase;
+				var amountInBase = command.Amount / fromCurrency.RateToBase;
 
 				var convertedAmount = Math.Round(amountInBase * toCurrency.RateToBase, 2);
 
 				return Results.Ok(new
 				{
-					request.From,
-					request.To,
-					request.Amount,
+					command.From,
+					command.To,
+					command.Amount,
 					ConvertedAmount = convertedAmount
 				});
 			})
