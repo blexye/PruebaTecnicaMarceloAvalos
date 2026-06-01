@@ -1,0 +1,564 @@
+{
+  "info": {
+    "_postman_id": "8a99d887-6d69-48ff-b860-2cb598678840",
+    "name": "ColeccionPruebaTecnicaMA",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51940536"
+  },
+  "item": [
+    {
+      "name": "Address",
+      "item": [
+        {
+          "name": "Listar direcciones por ID de usuario",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "x-api-key",
+                "value": "contra123",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://localhost:7230/users/9/addresses",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7230",
+              "path": [
+                "users",
+                "9",
+                "addresses"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Agregar nueva dirección",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-api-key",
+                "value": "contra123",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"street\": \"Soldado Ovelar\",\n  \"city\": \"Fernando de la Mora\",\n  \"country\": \"Paraguay\",\n  \"zipCode\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7230/users/9/addresses",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7230",
+              "path": [
+                "users",
+                "9",
+                "addresses"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Modificar dirección",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-api-key",
+                "value": "contra123",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"street\": \"Zavalas Cue\",\n  \"city\": \"Fernando de la Mora\",\n  \"country\": \"Paraguay\",\n  \"zipCode\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7230/addresses/6",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7230",
+              "path": [
+                "addresses",
+                "6"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar dirección",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "x-api-key",
+                "value": "contra123",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://localhost:7230/addresses/6",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7230",
+              "path": [
+                "addresses",
+                "6"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Currency",
+      "item": [
+        {
+          "name": "Listar todas las monedas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "application/json"
+              },
+              {
+                "key": "x-api-key",
+                "value": "contra123",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://localhost:7230/currency",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7230",
+              "path": [
+                "currency"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Agregar nueva moneda",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-api-key",
+                "value": "contra123",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"code\": \"uu\",\r\n  \"name\": \"string\",\r\n  \"rateToBase\": 3000\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7230/currency",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7230",
+              "path": [
+                "currency"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar moneda por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "x-api-key",
+                "value": "contra123",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://localhost:7230/currency/1",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7230",
+              "path": [
+                "currency",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Modificar moneda",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-api-key",
+                "value": "contra123",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"lll\",\n  \"name\": \"string\",\n  \"rateToBase\": 4000\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7230/currency/7",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7230",
+              "path": [
+                "currency",
+                "7"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar moneda",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "x-api-key",
+                "value": "contra123",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://localhost:7230/currency/5",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7230",
+              "path": [
+                "currency",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Conversor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-api-key",
+                "value": "contra123",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"from\": \"USD\",\n  \"to\": \"PYG\",\n  \"amount\": 27\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7230/currency/convert",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7230",
+              "path": [
+                "currency",
+                "convert"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Listar todos los usuarios",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "x-api-key",
+                "value": "contra123",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://localhost:7230/users",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7230",
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Agregar usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-api-key",
+                "value": "contra123",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Marcelo\",\n  \"email\": \"marcelo@gmail.com\",\n  \"password\": \"123456789\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7230/users",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7230",
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener usuario por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "x-api-key",
+                "value": "contra123",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://localhost:7230/users/10",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7230",
+              "path": [
+                "users",
+                "10"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Modificar datos de un usuario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-api-key",
+                "value": "contra123",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Iguana\",\n  \"email\": \"iguana@gmail.com\",\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://localhost:7230/users/9",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7230",
+              "path": [
+                "users",
+                "9"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar usuario",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              },
+              {
+                "key": "x-api-key",
+                "value": "contra123",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://localhost:7230/users/12",
+              "protocol": "https",
+              "host": [
+                "localhost"
+              ],
+              "port": "7230",
+              "path": [
+                "users",
+                "12"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

@@ -32,12 +32,6 @@ if (app.Environment.IsDevelopment())
 	app.MapOpenApi();
 }
 
-/*app.MapGet("/", () =>
-	{
-		return "Hello World!";
-	}
-);*/
-
 app.UseMiddleware<ApiKeyMiddleware>();
 
 app.MapUserEndpoints();
