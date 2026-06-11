@@ -1,6 +1,6 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using PruebaTecnicaMarceloAvalos.Application.Validators;
+using PruebaTecnicaMarceloAvalos.Features.Users.Commands.CreateUser;
 using PruebaTecnicaMarceloAvalos.Endpoints;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
 //using PruebaTecnicaMarceloAvalos.Middleware;
