@@ -40,14 +40,16 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 
 				return Results.Created();
 			})
-			.WithTags("Currencies");
+			.WithTags("Currencies")
+			.WithSummary("Crear una nueva moneda");
 
 			// Listar monedas
 			app.MapGet("/currency", async (AppDbContext db) =>
 			{
 				return await db.Currency.ToListAsync();
 			})
-			.WithTags("Currencies");
+			.WithTags("Currencies")
+			.WithSummary("Listar todas las monedas");
 
 			// Obtener moneda por ID
 			app.MapGet("/currency/{id}", async (int id, AppDbContext db) =>
@@ -68,7 +70,8 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 					? Results.NotFound()
 					: Results.Ok(currency);
 			})
-			.WithTags("Currencies");
+			.WithTags("Currencies")
+			.WithSummary("Listar moneda por ID");
 
 			// Modificar moneda
 			app.MapPut("/currency/{id}", async (int id, UpdateCurrencyCommand command, IValidator<UpdateCurrencyCommand> validator, AppDbContext db) =>
@@ -97,7 +100,8 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 
 				return Results.NoContent();
 			})
-			.WithTags("Currencies");
+			.WithTags("Currencies")
+			.WithSummary("Modificar una moneda existente");
 
 			//Eliminar moneda
 			app.MapDelete("/currency/{id}", async (int Id, AppDbContext db) =>
@@ -112,7 +116,8 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 
 				return Results.NoContent();
 			})
-			.WithTags("Currencies");
+			.WithTags("Currencies")
+			.WithSummary("Eliminar una moneda");
 
 			// Conversión de divisas
 			app.MapPost("/currency/convert", async (CurrencyConversionCommand command, IValidator<CurrencyConversionCommand> validator, AppDbContext db) =>
@@ -145,7 +150,8 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 					ConvertedAmount = convertedAmount
 				});
 			})
-			.WithTags("Currencies");
+			.WithTags("Currencies")
+			.WithSummary("Módulo conversor de divisas");
 		}
 	}
 }

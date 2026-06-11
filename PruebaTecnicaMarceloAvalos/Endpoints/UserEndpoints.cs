@@ -38,7 +38,8 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 
 				return Results.Created($"/users/{user.Id}", response);
 			})
-			.WithTags("Users");
+			.WithTags("Users")
+			.WithSummary("Crear nuevo usuario");
 
 			// Listar usuarios
 			app.MapGet("/users", async(AppDbContext db) =>
@@ -56,7 +57,8 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 
 				return Results.Ok(users);
 			})
-			.WithTags("Users");
+			.WithTags("Users")
+			.WithSummary("Listar todos los usuarios existentes");
 
 			// Obtener usuario por ID
 			app.MapGet("/users/{id}", async (int id, AppDbContext db) =>
@@ -78,7 +80,8 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 					? Results.NotFound()
 					: Results.Ok(user);
 			})
-			.WithTags("Users");
+			.WithTags("Users")
+			.WithSummary("Obtener usuario por ID");
 
 			// Modificar usuario
 			app.MapPut("/users/{id}", async (int id, UpdateUserCommand command, IValidator<UpdateUserCommand> validator, AppDbContext db) =>
@@ -107,7 +110,8 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 
 				return Results.NoContent();
 			})
-			.WithTags("Users");
+			.WithTags("Users")
+			.WithSummary("Modificar usuario");
 
 			// Eliminar usuario
 			app.MapDelete("/users/{id}", async (int id, AppDbContext db) =>
@@ -122,7 +126,8 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 
 				return Results.NoContent();
 			})
-			.WithTags("Users");
+			.WithTags("Users")
+			.WithSummary("Eliminar un usuario");
 		}
 	}
 }

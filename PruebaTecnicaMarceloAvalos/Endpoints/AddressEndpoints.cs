@@ -39,7 +39,8 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 
 				return Results.Created($"/users/{userId}/addresses/{address.Id}", address);
 			})
-			.WithTags("Addresses");
+			.WithTags("Addresses")
+			.WithSummary("Crear dirección para un usuario");
 
 			// Listar las direcciones de un usuario
 			app.MapGet("/users/{userId}/addresses", async (int UserId, AppDbContext db) =>
@@ -54,7 +55,8 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 					? Results.NotFound()
 					: Results.Ok(addresses);
 			})
-			.WithTags("Addresses");
+			.WithTags("Addresses")
+			.WithSummary("Listar las direcciones para cada usuario");
 
 			// Modificar dirección
 			app.MapPut("/addresses/{addressId}", async (int addressId, UpdateAddressCommand command, IValidator<UpdateAddressCommand> validator, AppDbContext db) =>
@@ -78,7 +80,8 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 
 				return Results.NoContent();
 			})
-			.WithTags("Addresses");
+			.WithTags("Addresses")
+			.WithSummary("Modificar una dirección");
 
 			// Eliminar dirección
 			app.MapDelete("/addresses/{addressId}", async (int addressId, AppDbContext db) =>
@@ -93,7 +96,8 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 
 				return Results.NoContent();
 			})
-			.WithTags("Addresses");
+			.WithTags("Addresses")
+			.WithSummary("Eliminar una dirección");
 		}
 	}
 }
