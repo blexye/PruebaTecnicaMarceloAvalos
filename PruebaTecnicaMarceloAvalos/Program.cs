@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PruebaTecnicaMarceloAvalos.Application.Validators;
 using PruebaTecnicaMarceloAvalos.Endpoints;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
-using PruebaTecnicaMarceloAvalos.Middleware;
+//using PruebaTecnicaMarceloAvalos.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +22,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 	options.UseSqlite(
 	builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddMediatR(cfg =>
+	cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
 var app = builder.Build();
 
 app.UseSwagger();
@@ -32,7 +35,7 @@ if (app.Environment.IsDevelopment())
 	app.MapOpenApi();
 }
 
-app.UseMiddleware<ApiKeyMiddleware>();
+//app.UseMiddleware<ApiKeyMiddleware>();
 
 app.MapUserEndpoints();
 app.MapAddressEndpoints();

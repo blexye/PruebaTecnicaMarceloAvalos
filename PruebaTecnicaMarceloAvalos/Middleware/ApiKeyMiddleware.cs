@@ -1,4 +1,4 @@
-﻿namespace PruebaTecnicaMarceloAvalos.Middleware
+﻿/*namespace PruebaTecnicaMarceloAvalos.Middleware
 {
 	public class ApiKeyMiddleware
 	{
@@ -32,3 +32,4 @@
 		}
 	}
 }
+*/

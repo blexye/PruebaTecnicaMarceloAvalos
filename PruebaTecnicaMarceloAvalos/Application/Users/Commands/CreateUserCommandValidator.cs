@@ -5,7 +5,7 @@ using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
 
 namespace PruebaTecnicaMarceloAvalos.Application.Validators
 {
-	public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
+	public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand2>
 	{
 		public CreateUserCommandValidator(AppDbContext context)
 		{
@@ -36,4 +36,3 @@ namespace PruebaTecnicaMarceloAvalos.Application.Validators
 
 	}
 }
-

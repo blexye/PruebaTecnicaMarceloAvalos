@@ -1,9 +1,9 @@
-﻿using FluentValidation;
+﻿using MediatR;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using PruebaTecnicaMarceloAvalos.Domain.Entities;
 using PruebaTecnicaMarceloAvalos.Application.Users.Commands;
+using PruebaTecnicaMarceloAvalos.Features.Users.Commands.CreateUser;
 using PruebaTecnicaMarceloAvalos.Infrastructure.Persistence;
-using PruebaTecnicaMarceloAvalos.Application.Users.DTOs;
 using PruebaTecnicaMarceloAvalos.Application.Users.Queries;
 
 namespace PruebaTecnicaMarceloAvalos.Endpoints
@@ -13,33 +13,12 @@ namespace PruebaTecnicaMarceloAvalos.Endpoints
 		public static void MapUserEndpoints(this WebApplication app)
 		{
 			// Crear usuario
-			app.MapPost("/users", async (CreateUserCommand command, IValidator<CreateUserCommand> validator, AppDbContext db) =>
+			app.MapPost("/users", async(CreateUserCommand command, IMediator mediator) =>
 			{
-				var result = await validator.ValidateAsync(command);
-
-				if (!result.IsValid)
-					return Results.BadRequest(result.Errors);
-
-				var user = new User
-				{
-					Name = command.Name,
-					Email = command.Email,
-					PasswordHash = BCrypt.Net.BCrypt.HashPassword(command.Password)
-				};
-
-				db.User.Add(user);
-				await db.SaveChangesAsync();
-
-				var response = new UserResponse
-				(
-					user.Name,
-					user.Email
-				);
-
-				return Results.Created($"/users/{user.Id}", response);
+				return await mediator.Send(command);
 			})
-			.WithTags("Users")
-			.WithSummary("Crear nuevo usuario");
+            .WithTags("Users")
+            .WithSummary("Crear nuevo usuario");
 
 			// Listar usuarios
 			app.MapGet("/users", async(AppDbContext db) =>
